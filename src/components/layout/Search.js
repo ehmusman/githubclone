@@ -21,6 +21,7 @@ class Search extends Component {
     }
     render() {
         const { text } = this.state;
+        const { clearUsers, showClear } = this.props
         return (
             <div>
                 <form onSubmit={this.onSubmit}>
@@ -34,14 +35,14 @@ class Search extends Component {
                             />
                         </div>
                         <div className="col-md-4 form-group">
-                            <input type="submit" value="Submit" className='btn btn-danger btn-block btn-lg' />
+                            <input type="submit" value="Submit" className='btn btn-dark btn-block btn-lg' />
                         </div>
                     </div>
                 </form>
-                {this.props.showClear &&
+                {showClear &&
                     <button
-                        className="btn btn-block btn-lg btn-dark"
-                        onClick={this.props.clearUsers}>
+                        className="btn btn-block btn-lg btn-danger"
+                        onClick={clearUsers}>
                         Clear
                     </button>}
 
