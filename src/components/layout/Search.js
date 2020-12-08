@@ -6,8 +6,11 @@ class Search extends Component {
         text: ''
     }
     static propTypes = {
-        searchUser: PropTypes.func.isRequired
+        searchUser: PropTypes.func.isRequired,
+        clearUsers: PropTypes.func.isRequired,
+        showClear: PropTypes.bool.isRequired
     }
+
     onSubmit = (e) => {
         e.preventDefault();
         this.props.searchUser(this.state.text)
@@ -19,21 +22,30 @@ class Search extends Component {
     render() {
         const { text } = this.state;
         return (
-            <form onSubmit={this.onSubmit}>
-                <div className="row">
-                    <div className="col-md-8 from-group">
-                        <input type="text" className='form-control form-control-lg'
-                            placeholder='Enter Username...'
-                            name='text'
-                            value={text}
-                            onChange={this.onChange}
-                        />
+            <div>
+                <form onSubmit={this.onSubmit}>
+                    <div className="row">
+                        <div className="col-md-8 from-group">
+                            <input type="text" className='form-control form-control-lg'
+                                placeholder='Enter Username...'
+                                name='text'
+                                value={text}
+                                onChange={this.onChange}
+                            />
+                        </div>
+                        <div className="col-md-4 form-group">
+                            <input type="submit" value="Submit" className='btn btn-danger btn-block btn-lg' />
+                        </div>
                     </div>
-                    <div className="col-md-4 form-group">
-                        <input type="submit" value="Submit" className='btn btn-danger btn-block btn-lg' />
-                    </div>
-                </div>
-            </form>
+                </form>
+                {this.props.showClear &&
+                    <button
+                        className="btn btn-block btn-lg btn-dark"
+                        onClick={this.props.clearUsers}>
+                        Clear
+                    </button>}
+
+            </div>
         )
     }
 }
