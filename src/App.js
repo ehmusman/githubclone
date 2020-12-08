@@ -4,6 +4,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 import Navbar from './components/layout/Navbar';
 import Users from './components/users/Users';
+import Search from './components/layout/Search';
 
 class App extends Component {
   state = {
@@ -17,12 +18,20 @@ class App extends Component {
     this.setState({ users: res.data, loading: false });
 
   }
+
+  searchUser = async (text) => {
+    this.setState({ loading: true });
+
+    const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`)
+    this.setState({ users: res.data.items, loading: false });
+  }
   render() {
     const { users, loading } = this.state;
     return (
       <div>
         <Navbar />
         <div className="container">
+          <Search searchUser={this.searchUser} />
           <Users users={users} loading={loading} />
         </div>
       </div>
