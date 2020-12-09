@@ -27,13 +27,21 @@ class App extends Component {
     this.setState({ alert: { type: type, msg: msg } })
     setTimeout(() => this.setState({ alert: null }), 5000)
   }
+  clearAlert = (msg) => {
+    if (msg === 'clear') {
+      this.setState({ alert: null })
+    }
+  }
   render() {
     const { users, loading } = this.state;
     return (
       <div>
         <Navbar />
         <div className="container">
-          <Alert alert={this.state.alert} />
+          <Alert
+            alert={this.state.alert}
+            clearAlert={this.clearAlert}
+          />
           <Search
             searchUser={this.searchUser}
             clearUsers={this.clearUsers}
