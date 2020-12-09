@@ -5,11 +5,13 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import Navbar from './components/layout/Navbar';
 import Users from './components/users/Users';
 import Search from './components/layout/Search';
+import Alert from './components/layout/Alert';
 
 class App extends Component {
   state = {
     users: [],
-    loading: false
+    loading: false,
+    alert: null
   }
   searchUser = async (text) => {
     this.setState({ loading: true });
@@ -21,17 +23,22 @@ class App extends Component {
   clearUsers = () => {
     this.setState({ users: [], loading: false })
   }
-
+  setAlert = (type, msg) => {
+    this.setState({ alert: { type: type, msg: msg } })
+    setTimeout(() => this.setState({ alert: null }), 5000)
+  }
   render() {
     const { users, loading } = this.state;
     return (
       <div>
         <Navbar />
         <div className="container">
+          <Alert alert={this.state.alert} />
           <Search
             searchUser={this.searchUser}
             clearUsers={this.clearUsers}
             showClear={users.length > 0 ? true : false}
+            setAlert={this.setAlert}
           />
           <Users users={users} loading={loading} />
         </div>
