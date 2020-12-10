@@ -16,8 +16,6 @@ const UserItem = ({ user: { login, avatar_url, html_url } }) => {
                 <Link
                     to={`user/${login}`}
                     className="btn btn-dark btn-sm py-2"
-                    target='_blank'
-                    rel="noopener noreferrer"
                 >more</Link></div>
         </div>
     )

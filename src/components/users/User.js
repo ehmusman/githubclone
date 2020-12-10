@@ -1,42 +1,72 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { Link } from 'react-router-dom';
+import Spinner from '../layout/Spinner';
+import Repos from '../repos/Repos';
 
 class User extends Component {
     componentDidMount() {
         this.props.getUser(this.props.match.params.login)
+        this.props.userRepos(this.props.match.params.login)
     }
     render() {
-        const { login, avatar_url, html_url, name, company, blog, location, bio, public_repos, public_gists, followers, following } = this.props.user;
-        // id, followers_url, following_url, organizations_url, repos_url,, created_at, updated_atemail
+        const { login, avatar_url, html_url, name, company, blog, location, bio, public_repos, public_gists, followers, following, hireable } = this.props.user;
+
+
+        const { loading, repos } = this.props;
+        if (loading) return <Spinner />
         return (
-            <div className='row'>
-                <div className="col-md-6 card text-center">
-                    <img src={avatar_url} alt="avatar" className="card-img-top rounded-circle"
-                        style={{ width: '40%', margin: '0 auto' }} />
-                    <div className="card-body">
-                        <h3 className="card-title">{name}</h3>
+            <Fragment>
+                <Link to='/' className='btn btn-dark mb-3 mx-3'>Back to Search</Link>
+                Hireable: {hireable ? <i className="fas fa-check text-success"></i> : <i className="fas fa-times-circle text-danger"></i>}
+                <div className='row'>
+                    <div className="col-md-6 card text-center">
+                        <img src={avatar_url} alt="avatar" className="card-img-top rounded-circle"
+                            style={{ width: '40%', margin: '0 auto' }} />
                         <div className="card-body">
-                            <strong>Location : </strong> {location}
+                            <h3 className="card-title">{name}</h3>
+                            <div className="card-body">
+                                {location &&
+                                    <Fragment>
+                                        <strong>Location:</strong> {location} <br />
+                                    </Fragment>}
+
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="col-md-6 card">
-                    <div className="card-body">
-                        <h3 className='card-title'>Bio</h3>
-                        {bio} <br />
-                        <a href={html_url} className='btn btn-dark my-3'>Visit Github Profile</a>
-                        <br />
-                        <strong>username:</strong> {login} <br />
-                        <strong>company: </strong>{company} <br />
-                        <strong>Website: </strong>{blog} <br />
+                    <div className="col-md-6 card">
+                        <div className="card-body">
+                            {bio && <Fragment>
+                                <h3 className='card-title'>Bio</h3>
+                                {bio} <br />
+                            </Fragment>}
+
+                            <a href={html_url} className='btn btn-dark my-3'>Visit Github Profile</a>
+                            <br />
+                            {login &&
+                                <Fragment>
+                                    <strong>username:</strong> {login} <br />
+                                </Fragment>}
+                            {blog &&
+                                <Fragment>
+                                    <strong>Website:</strong> {blog} <br />
+                                </Fragment>}
+
+                            {company &&
+                                <Fragment>
+                                    <strong>Company:</strong> {company} <br />
+                                </Fragment>}
+                        </div>
+                    </div>
+                    <div className="col-md-12 py-3 card d-flex flex-row justify-content-around">
+                        <span className="badge badge-success" style={{ fontSize: '1.3rem' }} > Followers: {followers}</span>
+                        <span className="badge  badge-danger" style={{ fontSize: '1.3rem' }} > Following: {following}</span>
+                        <span className="badge  badge-dark" style={{ fontSize: '1.3rem' }} > Public Repos:: {public_repos}</span>
+                        <span className="badge  badge-light" style={{ fontSize: '1.3rem' }} > Public Gists:: {public_gists}</span>
                     </div>
                 </div>
-                <div className="col-md-12">
-                    <span className="badge badge-success" style={{ width: '25%', fontSize: '1.3rem' }}> Followers: {followers}</span>
-                    <span className="badge  badge-danger" style={{ width: '25%', fontSize: '1.3rem' }}> Following: {following}</span>
-                    <span className="badge  badge-dark" style={{ width: '25%', fontSize: '1.3rem' }}> Public Repos:: {public_repos}</span>
-                    <span className="badge  badge-light" style={{ width: '25%', fontSize: '1.3rem' }}> Public Gists:: {public_gists}</span>
-                </div>
-            </div>
+                <h3 className='my-2'>Recent Repos</h3>
+                <Repos repos={repos} />
+            </Fragment>
 
         )
     }
