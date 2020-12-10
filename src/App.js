@@ -8,10 +8,12 @@ import Users from './components/users/Users';
 import Search from './components/layout/Search';
 import Alert from './components/layout/Alert';
 import About from './components/pages/About';
+import User from './components/users/User';
 
 class App extends Component {
   state = {
     users: [],
+    user: {},
     loading: false,
     alert: null
   }
@@ -58,6 +60,9 @@ class App extends Component {
                 </React.Fragment>
               } />
               <Route exact path='/about' component={About} />
+              <Route exact path='/user/:login' render={props =>
+                <User />
+              } />
             </Switch>
 
           </div>
